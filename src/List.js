@@ -7,6 +7,7 @@ import throttle from 'lodash.throttle';
 import Item from './Item';
 import Loading from './Loading';
 import Header from './Header';
+import styles from './styles.css';
 
 export default class List extends Component {
 	state = { itemLocation: 0, items: [], dismissedIDs: new Set() };
@@ -26,7 +27,7 @@ export default class List extends Component {
 		if (scrollY > scrollHeight - innerHeight * 5) {
 			this.fetchItems();
 		}
-		this.updateLocation(scrollY / scrollHeight);
+		this.updateLocation((scrollY + innerHeight / 2) / scrollHeight);
 	};
 
 	updateLocation = throttle(itemLocation => {
@@ -40,7 +41,7 @@ export default class List extends Component {
 
 		get(`${BASE_URL}/messages`, {
 			params: {
-				limit: 500,
+				limit: 5,
 				pageToken: lastPageToken,
 			},
 		})
@@ -52,25 +53,17 @@ export default class List extends Component {
 	}
 
 	onFetchSuccess = ({ data }) => {
-		let { items = [] } = this.state;
+		let { items } = this.state;
 		let { count, messages, pageToken } = data;
 		let { scrollY } = window;
-		this.setState(
-			{
-				items: [...items, ...messages],
-				fetching: false,
-				lastPageToken: pageToken,
-			},
-			() => {
-				var distanceFromBottom =
-					document.body.scrollHeight - window.innerHeight - window.scrollY;
-				if (distanceFromBottom < 100) {
-					// window.scrollTo(0, window.scrollY - 200);
-				}
-			}
-		);
+		this.setState({
+			items: [...items, ...messages],
+			fetching: false,
+			lastPageToken: pageToken,
+		});
 	};
 	dismissID(id) {
+		console.log(id);
 		this.setState(
 			({ dismissedIDs }) => ({
 				dismissedIDs: dismissedIDs.add(id),
@@ -80,37 +73,40 @@ export default class List extends Component {
 	}
 	render({}, { itemLocation, items, fetching, dismissedIDs }) {
 		let filteredItems = items.filter(({ id }) => !dismissedIDs.has(id));
-		let apl = Math.floor(itemLocation * items.length);
+		let apl = Math.floor(itemLocation * filteredItems.length);
+		let liveZone = 1;
 		console.log(
 			items
 				.map((data, i) => {
 					let dismissed = dismissedIDs.has(data.id);
 
 					if (dismissed) {
-						apl++;
+						// apl--;
 						return '-';
 					}
-					return Math.abs(apl - i) > 25 ? '.' : '*';
+					return Math.abs(apl - i) > liveZone ? '.' : '*';
 				})
 				.join('')
 		);
-
 		apl = Math.floor(itemLocation * items.length);
-
 		return (
 			<div className="list-container">
-				<Header items={filteredItems} fetching={fetching} />
+				<Header
+					items={filteredItems}
+					dismissedIDs={dismissedIDs}
+					fetching={fetching}
+				/>
 				<div className="list">
 					{items.map((data, i) => {
 						let dismissed = dismissedIDs.has(data.id);
-						if (dismissed) apl++;
+						// if (dismissed) apl--;
 						return (
 							<Item
 								key={data.id}
-								light={Math.abs(apl - i) > 25}
+								light={Math.abs(apl - i) > liveZone}
 								data={data}
-								dismissed={dismissedIDs.has(data.id)}
-								dismiss={this.dismissID.bind(this, data.id)}
+								dismissed={dismissed}
+								dismiss={this.dismissID.bind(this)}
 							/>
 						);
 					})}

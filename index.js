@@ -1,5 +1,5 @@
 import { h, render } from 'preact';
-import App from './src/app';
+import List from './src/List';
 
 if (process.env.NODE_ENV === 'development') {
 	// Enable preact devtools
@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const mountNode = document.getElementById('root');
 
-render(<App />, mountNode, mountNode.lastChild);
+render(<List />, mountNode, mountNode.lastChild);
 
 // Hot Module Replacement
 if (module.hot) {

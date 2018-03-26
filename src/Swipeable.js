@@ -1,33 +1,30 @@
 import { Component, h, cloneElement } from 'preact';
+import { list } from 'postcss';
+
+const listenerOptions = {
+	capture: true,
+	passive: true,
+};
 
 export default class SwipeRecognizer extends Component {
 	constructor() {
 		super();
 		this.tolerance = 200;
 		this.gesture = { x: [], y: [], match: '' };
-		this.dismissCalled = false;
-		this.state = { offset: 0, swipe: false, released: true };
+		this.state = { offset: 0, released: true, hint: false };
 	}
 
 	componentDidMount() {
-		this.base.addEventListener('touchstart', this.capture, {
-			capture: true,
-			passive: true,
-		});
-		this.base.addEventListener('touchmove', this.capture, {
-			capture: true,
-			passive: true,
-		});
-		this.base.addEventListener('touchend', this.compute, {
-			capture: true,
-			passive: true,
-		});
+		this.base.addEventListener('touchstart', this.capture, listenerOptions);
+		this.base.addEventListener('touchmove', this.capture, listenerOptions);
+		this.base.addEventListener('touchend', this.compute, listenerOptions);
 	}
 
 	componentWillUnmount() {
-		this.base.removeEventListener('touchstart', this.capture);
-		this.base.removeEventListener('touchmove', this.capture);
-		this.base.removeEventListener('touchend', this.compute);
+		console.log('unmounting', this.props.id);
+		this.base.removeEventListener('touchstart', this.capture, listenerOptions);
+		this.base.removeEventListener('touchmove', this.capture, listenerOptions);
+		this.base.removeEventListener('touchend', this.compute, listenerOptions);
 	}
 
 	capture = event => {
@@ -37,7 +34,11 @@ export default class SwipeRecognizer extends Component {
 		let xStart = this.gesture.x[0];
 		let xEnd = this.gesture.x.slice(-1)[0];
 		let xTravel = xEnd - xStart;
-		this.setState({ offset: xTravel, released: false });
+		this.setState({
+			offset: xTravel,
+			released: false,
+			hint: Math.abs(xTravel) > this.tolerance,
+		});
 	};
 
 	compute = event => {
@@ -52,17 +53,8 @@ export default class SwipeRecognizer extends Component {
 			Math.abs(yTravel) < this.tolerance &&
 			Math.abs(xTravel) > this.tolerance
 		) {
-			this.gesture.match = true;
-			this.setState({ swipe: true });
-			console.log('swiped');
-			window.setTimeout(() => {
-				if (this.dismissCalled) {
-					return;
-				} else {
-					this.props.dismiss();
-					this.dismissCalled = true;
-				}
-			}, 500);
+			console.log('swiped', this.props.id);
+			this.props.dismiss(this.props.id);
 		} else {
 			this.setState({ offset: 0 });
 		}

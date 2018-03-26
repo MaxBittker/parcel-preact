@@ -8,16 +8,17 @@ const ItemCard = ({
 	content,
 	id,
 	light,
-	swipe,
 	offset,
-	released,
 	dismissed,
+	released,
+	hint,
 }) => (
 	<div
 		className={classnames('item', {
-			dismissed: swipe || dismissed,
+			dismissed,
 			released,
 			light,
+			hint,
 		})}
 		style={{ left: `${offset}px` }}
 	>
@@ -32,9 +33,9 @@ const ItemCard = ({
 
 export default ({ light, data, dismissed, dismiss }) =>
 	light ? (
-		<ItemCard {...data} light={light} dismissed={dismissed} key={data.id} />
+		<ItemCard {...data} light dismissed={dismissed} key={data.id} />
 	) : (
-		<Swipeable dismiss={dismiss} key={data.id}>
+		<Swipeable dismiss={dismiss} key={data.id} id={data.id}>
 			<ItemCard {...data} dismissed={dismissed} />
 		</Swipeable>
 	);
