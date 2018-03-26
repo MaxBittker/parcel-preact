@@ -36,7 +36,7 @@ export default class List extends Component {
 	};
 
 	//this triggers renders, so don't let it fire on every scroll event
-	updateLocation = throttle(itemLocation => {
+	updateLocation = throttle(scrollLocation => {
 		this.setState({ scrollLocation });
 	}, 250);
 
@@ -49,7 +49,7 @@ export default class List extends Component {
 
 		get(`${BASE_URL}/messages`, {
 			params: {
-				limit: 5,
+				limit: 50,
 				pageToken: lastPageToken,
 			},
 		})
@@ -81,46 +81,47 @@ export default class List extends Component {
 		);
 	}
 	render({}, { scrollLocation, items, fetching, dismissedIDs }) {
-		let filteredItems = items.filter(({ id }) => !dismissedIDs.has(id));
-		let apl = Math.floor(scrollLocation * filteredItems.length);
-		let liveZone = 20;
+		// aproximate number of interactive items to render at a given time
+		let liveZone = 16 / 2;
 
+		let visibleCount = 0;
+
+		//annotate items with and index that ignores invisible items
+		let indexedItems = items.map(data => {
+			if (!dismissedIDs.has(data.id)) visibleCount++;
+			return { ...data, index: visibleCount - 1 };
+		});
+
+		//index in list corresponding to the middle of the viewport
+		let viewportIndex = Math.floor(scrollLocation * visibleCount);
+
+		//console visualization of scroll window data
 		console.log(
-			items
+			indexedItems
 				.map((data, i) => {
-					let dismissed = dismissedIDs.has(data.id);
-
-					if (dismissed) {
-						// apl--;
-						return '-';
-					}
-					return Math.abs(apl - i) > liveZone ? '.' : '*';
+					if (dismissedIDs.has(data.id)) return '-';
+					return Math.abs(viewportIndex - data.index) > liveZone ? '.' : '*';
 				})
 				.join('')
 		);
-		apl = Math.floor(scrollLocation * items.length);
 
 		return (
 			<div className="list-container">
 				<Header
-					items={filteredItems}
+					itemCount={visibleCount}
 					dismissedIDs={dismissedIDs}
 					fetching={fetching}
 				/>
 				<div className="list">
-					{items.map((data, i) => {
-						let dismissed = dismissedIDs.has(data.id);
-						// if (dismissed) apl--;
-						return (
-							<Item
-								key={data.id}
-								light={Math.abs(apl - i) > liveZone}
-								data={data}
-								dismissed={dismissed}
-								dismiss={this.dismissID.bind(this)}
-							/>
-						);
-					})}
+					{indexedItems.map((data, i) => (
+						<Item
+							key={data.id}
+							data={data}
+							flyweight={Math.abs(viewportIndex - data.index) > liveZone}
+							dismissed={dismissedIDs.has(data.id)}
+							dismiss={this.dismissID.bind(this)}
+						/>
+					))}
 				</div>
 				<Loading fetching={fetching} />
 			</div>

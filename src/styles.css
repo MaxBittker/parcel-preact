@@ -68,8 +68,8 @@ body {
 .item.released {
 	transition: all 0.5s;
 }
-.item.light {
-	background-color: bisque;
+.item.flyweight {
+	color: #909090;
 }
 
 .item.hint {
@@ -130,6 +130,7 @@ body {
 }
 
 /* throbber animations */
+
 .throbber,
 .throbber:before,
 .throbber:after {
