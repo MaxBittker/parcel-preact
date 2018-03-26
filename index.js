@@ -1,10 +1,11 @@
-import { h, render } from 'preact';
+import { render } from 'inferno';
+
 import List from './src/List';
 
 if (process.env.NODE_ENV === 'development') {
-	// Enable preact devtools
+	// Enable inferno devtools
 	// eslint-disable-next-line import/no-unassigned-import
-	require('preact/devtools');
+	// require('inferno/devtools');
 }
 
 const mountNode = document.getElementById('root');

@@ -1,6 +1,7 @@
 * {
 	margin: 0;
 }
+
 html {
 	overflow-x: hidden;
 }
@@ -8,29 +9,35 @@ html {
 body {
 	--body-dark: #404040;
 	--body-light: oldlace;
+
 	width: 100vw;
 	overflow-x: hidden;
+
+	font-family: 'IBM Plex Serif', serif;
+	font-size: 14px;
+
 	background: repeating-linear-gradient(
 		rgb(140, 140, 180) 0px,
 		rgb(180, 140, 140) 1000px,
 		rgb(140, 140, 180) 2000px
 	);
 	color: var(--body-dark);
-	font-family: 'IBM Plex Serif', serif;
-	font-size: 14px;
 }
 
 .header {
 	position: fixed;
 	top: 0;
 	z-index: 2;
+
 	width: 100%;
 	height: 35px;
-	background-color: var(--body-light);
-	border-bottom: 1px solid var(--body-dark);
+
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+
+	background-color: var(--body-light);
+	border-bottom: 1px solid var(--body-dark);
 }
 
 .header span {
@@ -55,7 +62,7 @@ body {
 	background-color: var(--body-light);
 	max-height: 1050px;
 	margin: auto;
-	transition: opacity 0.5s, filter 0.5s;
+	transition: opacity 0.5s, max-height 0.5s, filter 0.5s;
 }
 
 .item.released {
@@ -65,17 +72,19 @@ body {
 	background-color: bisque;
 }
 
+.item.hint {
+	filter: blur(3px);
+	opacity: 0.8;
+}
+
 .item.dismissed {
 	max-height: 0px;
 	opacity: 0;
 	border-bottom: 0px;
 	border-top: 0px;
-	filter: blur(30px);
+	filter: blur(5px);
 }
-.item.hint {
-	filter: blur(3px);
-	opacity: 0.8;
-}
+
 .item p {
 	padding: 5px;
 }
@@ -120,6 +129,7 @@ body {
 	color: var(--body-light);
 }
 
+/* throbber animations */
 .throbber,
 .throbber:before,
 .throbber:after {

@@ -1,16 +1,18 @@
-import { Component, h, cloneElement } from 'preact';
+import Inferno from 'inferno';
+import Component from 'inferno-component';
+
 import classnames from 'classnames';
-import Swipeable from './Swipeable';
+import SwipeableCard from './Swipeable';
 import { BASE_URL } from './fetching';
 
 const ItemCard = ({
 	author,
 	content,
 	id,
-	light,
 	offset,
 	dismissed,
 	released,
+	light,
 	hint,
 }) => (
 	<div
@@ -31,11 +33,17 @@ const ItemCard = ({
 	</div>
 );
 
+export { ItemCard };
+
 export default ({ light, data, dismissed, dismiss }) =>
 	light ? (
 		<ItemCard {...data} light dismissed={dismissed} key={data.id} />
 	) : (
-		<Swipeable dismiss={dismiss} key={data.id} id={data.id}>
-			<ItemCard {...data} dismissed={dismissed} />
-		</Swipeable>
+		<SwipeableCard
+			dismiss={dismiss}
+			dismissed={dismissed}
+			key={data.id}
+			id={data.id}
+			data={data}
+		/>
 	);

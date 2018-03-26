@@ -1,4 +1,5 @@
-import { Component, h } from 'preact';
+import Component from 'inferno-component';
+
 import { get } from 'axios';
 import { BASE_URL } from './fetching';
 import debounce from 'lodash.debounce';
@@ -10,7 +11,7 @@ import Header from './Header';
 import styles from './styles.css';
 
 export default class List extends Component {
-	state = { itemLocation: 0, items: [], dismissedIDs: new Set() };
+	state = { scrollLocation: 0, items: [], dismissedIDs: new Set() };
 
 	componentDidMount() {
 		document.addEventListener('scroll', this.onScroll);
@@ -21,22 +22,29 @@ export default class List extends Component {
 	}
 
 	onScroll = e => {
-		let { scrollHeight } = this.base;
+		let { scrollHeight } = window.document.body;
 		let { scrollY, innerHeight } = window;
 
+		// if we're within 5 screen of the bottom, fetch more data
 		if (scrollY > scrollHeight - innerHeight * 5) {
 			this.fetchItems();
 		}
+
+		// this is a number between 0 and 1 representing our scroll location.
+		// it's used to decide which components to enable touch events on
 		this.updateLocation((scrollY + innerHeight / 2) / scrollHeight);
 	};
 
+	//this triggers renders, so don't let it fire on every scroll event
 	updateLocation = throttle(itemLocation => {
-		this.setState({ itemLocation });
-	}, 200);
+		this.setState({ scrollLocation });
+	}, 250);
 
 	fetchItems() {
 		let { lastPageToken, fetching } = this.state;
+
 		if (fetching) return;
+
 		this.setState({ fetching: true });
 
 		get(`${BASE_URL}/messages`, {
@@ -62,19 +70,21 @@ export default class List extends Component {
 			lastPageToken: pageToken,
 		});
 	};
+	//callback for tracking dismissed ids
 	dismissID(id) {
-		console.log(id);
 		this.setState(
 			({ dismissedIDs }) => ({
 				dismissedIDs: dismissedIDs.add(id),
 			}),
+			// see if we need to refetch
 			this.onScroll
 		);
 	}
-	render({}, { itemLocation, items, fetching, dismissedIDs }) {
+	render({}, { scrollLocation, items, fetching, dismissedIDs }) {
 		let filteredItems = items.filter(({ id }) => !dismissedIDs.has(id));
-		let apl = Math.floor(itemLocation * filteredItems.length);
-		let liveZone = 1;
+		let apl = Math.floor(scrollLocation * filteredItems.length);
+		let liveZone = 20;
+
 		console.log(
 			items
 				.map((data, i) => {
@@ -88,7 +98,8 @@ export default class List extends Component {
 				})
 				.join('')
 		);
-		apl = Math.floor(itemLocation * items.length);
+		apl = Math.floor(scrollLocation * items.length);
+
 		return (
 			<div className="list-container">
 				<Header

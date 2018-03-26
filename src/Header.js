@@ -1,4 +1,5 @@
-import { Component, h, cloneElement } from 'preact';
+import Inferno from 'inferno';
+import Component from 'inferno-component';
 
 export default class Header extends Component {
 	render({ items, fetching }) {

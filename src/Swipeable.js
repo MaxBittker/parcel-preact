@@ -1,5 +1,7 @@
-import { Component, h, cloneElement } from 'preact';
-import { list } from 'postcss';
+import Component from 'inferno-component';
+import { findDOMNode } from 'inferno';
+import { cloneVNode } from 'inferno-clone-vnode';
+import { ItemCard } from './Item';
 
 const listenerOptions = {
 	capture: true,
@@ -13,24 +15,24 @@ export default class SwipeRecognizer extends Component {
 		this.gesture = { x: [], y: [], match: '' };
 		this.state = { offset: 0, released: true, hint: false };
 	}
-
 	componentDidMount() {
-		this.base.addEventListener('touchstart', this.capture, listenerOptions);
-		this.base.addEventListener('touchmove', this.capture, listenerOptions);
-		this.base.addEventListener('touchend', this.compute, listenerOptions);
+		var node = this.body;
+
+		node.addEventListener('touchstart', this.capture, listenerOptions);
+		node.addEventListener('touchmove', this.capture, listenerOptions);
+		node.addEventListener('touchend', this.compute, listenerOptions);
 	}
 
 	componentWillUnmount() {
-		console.log('unmounting', this.props.id);
-		this.base.removeEventListener('touchstart', this.capture, listenerOptions);
-		this.base.removeEventListener('touchmove', this.capture, listenerOptions);
-		this.base.removeEventListener('touchend', this.compute, listenerOptions);
+		var node = this.body;
+		node.removeEventListener('touchstart', this.capture, listenerOptions);
+		node.removeEventListener('touchmove', this.capture, listenerOptions);
+		node.removeEventListener('touchend', this.compute, listenerOptions);
 	}
 
 	capture = event => {
 		this.gesture.x.push(event.touches[0].clientX);
 		this.gesture.y.push(event.touches[0].clientY);
-
 		let xStart = this.gesture.x[0];
 		let xEnd = this.gesture.x.slice(-1)[0];
 		let xTravel = xEnd - xStart;
@@ -64,7 +66,11 @@ export default class SwipeRecognizer extends Component {
 		this.setState({ released: true });
 	};
 
-	render({ children }, state) {
-		return cloneElement(children[0], state);
+	render({ data, dismissed }, state) {
+		return (
+			<div ref={node => (this.body = node)}>
+				<ItemCard {...data} dismissed={dismissed} {...state} />
+			</div>
+		);
 	}
 }

@@ -1,32 +1,33 @@
 {
-	"name": "parcel-preact",
+	"name": "parcel-inferno",
 	"version": "1.0.0",
-	"description": "Minimal Parcel Preact Test",
+	"description": "Minimal Parcel inferno Test",
 	"main": "index.js",
 	"scripts": {
 		"start": "parcel index.html",
-		"dev": "parcel watch index.html",
 		"lint": "eslint . --cache --fix",
-		"build": "parcel build index.js",
-		"pretest": "npm run lint",
-		"format": "prettier --write '**/*.{js,css,md}'",
-		"posttest": "npm run format"
+		"build": "parcel build index.js"
 	},
 	"repository": {
 		"type": "git"
 	},
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/SaraVieira/parcel-preact/issues"
+		"url": "https://github.com/maxbittker/parcel-inferno/issues"
 	},
-	"homepage": "https://github.com/SaraVieira/parcel-preact#readme",
+	"homepage": "https://github.com/maxbittker/parcel-inferno#readme",
 	"dependencies": {
 		"axios": "^0.18.0",
 		"babel-cli": "^6.26.0",
+		"babel-plugin-inferno": "^5.0.1",
 		"classnames": "^2.2.5",
+		"inferno": "^5.0.1",
+		"inferno-clone-vnode": "^5.0.1",
+		"inferno-component": "^5.0.1",
+		"inferno-create-element": "^5.0.1",
+		"inferno-devtools": "^5.0.1",
 		"lodash.debounce": "^4.0.8",
-		"lodash.throttle": "^4.1.1",
-		"preact": "^8.2.7"
+		"lodash.throttle": "^4.1.1"
 	},
 	"devDependencies": {
 		"babel": "*",
