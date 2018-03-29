@@ -1,14 +1,12 @@
 import Component from 'inferno-component';
 
 import { get } from 'axios';
-import { BASE_URL } from './fetching';
+import BASE_URL from './fetching';
 import debounce from 'lodash.debounce';
-import throttle from 'lodash.throttle';
 
 import Item from './Item';
 import Loading from './Loading';
 import Header from './Header';
-import styles from './styles.css';
 
 export default class List extends Component {
 	state = { scrollLocation: 0, items: [], dismissedIDs: new Set() };
@@ -17,11 +15,12 @@ export default class List extends Component {
 		document.addEventListener('scroll', this.onScroll);
 		this.fetchItems();
 	}
+
 	componentWillUnmount() {
 		document.removeEventListener('scroll', this.onScroll);
 	}
 
-	onScroll = e => {
+	onScroll = () => {
 		let { scrollHeight } = window.document.body;
 		let { scrollY, innerHeight } = window;
 
@@ -35,10 +34,10 @@ export default class List extends Component {
 		this.updateLocation((scrollY + innerHeight / 2) / scrollHeight);
 	};
 
-	//this triggers renders, so don't let it fire on every scroll event
-	updateLocation = throttle(scrollLocation => {
+	//this triggers renders, so don't let it fire during active scrolling
+	updateLocation = debounce(scrollLocation => {
 		this.setState({ scrollLocation });
-	}, 250);
+	}, 50);
 
 	fetchItems() {
 		let { lastPageToken, fetching } = this.state;
@@ -62,14 +61,15 @@ export default class List extends Component {
 
 	onFetchSuccess = ({ data }) => {
 		let { items } = this.state;
-		let { count, messages, pageToken } = data;
-		let { scrollY } = window;
+		let { messages, pageToken } = data;
 		this.setState({
 			items: [...items, ...messages],
 			fetching: false,
 			lastPageToken: pageToken,
 		});
+		this.onScroll();
 	};
+
 	//callback for tracking dismissed ids
 	dismissID(id) {
 		this.setState(
@@ -95,25 +95,11 @@ export default class List extends Component {
 		//index in list corresponding to the middle of the viewport
 		let viewportIndex = Math.floor(scrollLocation * visibleCount);
 
-		//console visualization of scroll window data
-		console.log(
-			indexedItems
-				.map((data, i) => {
-					if (dismissedIDs.has(data.id)) return '-';
-					return Math.abs(viewportIndex - data.index) > liveZone ? '.' : '*';
-				})
-				.join('')
-		);
-
 		return (
 			<div className="list-container">
-				<Header
-					itemCount={visibleCount}
-					dismissedIDs={dismissedIDs}
-					fetching={fetching}
-				/>
+				<Header count={visibleCount} />
 				<div className="list">
-					{indexedItems.map((data, i) => (
+					{indexedItems.map(data => (
 						<Item
 							key={data.id}
 							data={data}

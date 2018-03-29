@@ -1,12 +1,10 @@
-import Inferno from 'inferno';
-import Component from 'inferno-component';
-
-import { distanceInWords } from 'date-fns';
+import timeago from 'timeago.js';
 
 import classnames from 'classnames';
 import SwipeableCard from './Swipeable';
-import { BASE_URL } from './fetching';
+import BASE_URL from './fetching';
 
+const ago = timeago();
 const PLACEHOLDER_IMG =
 	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
 
@@ -25,27 +23,31 @@ const ItemCard = ({
 		className={classnames('item', {
 			dismissed,
 			released,
-			flyweight,
 			hint,
 		})}
-		style={{ left: `${offset}px` }}
+		style={{ transform: `translate3d(${offset}px, 0px, 0px)` }}
 	>
 		<div className="author">
 			<img
 				src={flyweight ? PLACEHOLDER_IMG : `${BASE_URL}${author.photoUrl}`}
 				alt={author.name}
 			/>
-			<span className="author-name">{author.name}</span>
+			<div>
+				<h2>{author.name}</h2>
+				<span className="message-date">
+					{`${new Date(updated).toLocaleDateString()} 
+					(${ago.format(updated)})`}
+				</span>
+				<h3>{id}</h3>
+			</div>
 		</div>
-		<h1>{id}</h1>
-		<span>{distanceInWords(new Date(updated), new Date())}</span>
 		<p>{content}</p>
 	</div>
 );
 
 export { ItemCard };
 
-export default ({ flyweight, data, dismissed, dismiss }) =>
+const Item = ({ flyweight, data, dismissed, dismiss }) =>
 	flyweight ? (
 		<ItemCard {...data} flyweight dismissed={dismissed} key={data.id} />
 	) : (
@@ -57,3 +59,5 @@ export default ({ flyweight, data, dismissed, dismiss }) =>
 			data={data}
 		/>
 	);
+
+export default Item;

@@ -1,13 +1,8 @@
-import Inferno from 'inferno';
-import Component from 'inferno-component';
+const Header = ({ count }) => (
+	<div className="header">
+		<h1> Messages</h1>
+		<h1>{count}/∞</h1>
+	</div>
+);
 
-export default class Header extends Component {
-	render({ itemCount, fetching }) {
-		return (
-			<div className="header">
-				{fetching && <span className="throbber" />}
-				<span>Items: {itemCount} </span>
-			</div>
-		);
-	}
-}
+export default Header;

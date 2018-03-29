@@ -1,12 +1,7 @@
 import { render } from 'inferno';
 
 import List from './src/List';
-
-if (process.env.NODE_ENV === 'development') {
-	// Enable inferno devtools
-	// eslint-disable-next-line import/no-unassigned-import
-	// require('inferno/devtools');
-}
+import styles from './src/styles.css';
 
 const mountNode = document.getElementById('root');
 

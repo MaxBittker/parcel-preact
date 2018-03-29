@@ -21,14 +21,13 @@
 		"babel-cli": "^6.26.0",
 		"babel-plugin-inferno": "^5.0.1",
 		"classnames": "^2.2.5",
-		"date-fns": "^1.29.0",
+		"eslint-plugin-react": "^7.7.0",
 		"inferno": "^5.0.1",
-		"inferno-clone-vnode": "^5.0.1",
 		"inferno-component": "^5.0.1",
 		"inferno-create-element": "^5.0.1",
 		"inferno-devtools": "^5.0.1",
 		"lodash.debounce": "^4.0.8",
-		"lodash.throttle": "^4.1.1"
+		"timeago.js": "^3.0.2"
 	},
 	"devDependencies": {
 		"babel": "*",

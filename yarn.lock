@@ -78,6 +78,10 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@types/jquery@^2.0.40":
+  version "2.0.49"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-2.0.49.tgz#95bd7064caebf65bde10429dff491a1aea05b67d"
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -2052,7 +2056,7 @@ eslint-plugin-react-native@^3.2.0:
   dependencies:
     eslint-plugin-react-native-globals "^0.1.1"
 
-eslint-plugin-react@^7.5.0:
+eslint-plugin-react@^7.5.0, eslint-plugin-react@^7.7.0:
   version "7.7.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.7.0.tgz#f606c719dbd8a1a2b3d25c16299813878cca0160"
   dependencies:
@@ -2707,10 +2711,6 @@ indexof@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/indexof/-/indexof-0.0.1.tgz#82dc336d232b9062179d05ab3293a66059fd435d"
 
-inferno-clone-vnode@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/inferno-clone-vnode/-/inferno-clone-vnode-5.0.1.tgz#3bb411974632242aae0575c926e69da78d33248c"
-
 inferno-component@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/inferno-component/-/inferno-component-5.0.1.tgz#09458f8f5362d213e4dfbca70f0321efaca107ee"
@@ -3231,10 +3231,6 @@ lodash.debounce@^4.0.8:
 lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
-
-lodash.throttle@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
 
 lodash.uniq@^4.5.0:
   version "4.5.0"
@@ -4978,6 +4974,12 @@ through2@^2.0.0, through2@~2.0.3:
 through@^2.3.6:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
+
+timeago.js@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/timeago.js/-/timeago.js-3.0.2.tgz#32a67e7c0d887ea42ca588d3aae26f77de5e76cc"
+  dependencies:
+    "@types/jquery" "^2.0.40"
 
 timers-browserify@^2.0.4:
   version "2.0.6"
