@@ -18,10 +18,7 @@
 	"homepage": "https://github.com/maxbittker/parcel-inferno#readme",
 	"dependencies": {
 		"axios": "^0.18.0",
-		"babel-cli": "^6.26.0",
-		"babel-plugin-inferno": "^5.0.1",
 		"classnames": "^2.2.5",
-		"eslint-plugin-react": "^7.7.0",
 		"inferno": "^5.0.1",
 		"inferno-component": "^5.0.1",
 		"inferno-create-element": "^5.0.1",
@@ -30,6 +27,9 @@
 		"timeago.js": "^3.0.2"
 	},
 	"devDependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-plugin-inferno": "^5.0.1",
+		"eslint-plugin-react": "^7.7.0",
 		"babel": "*",
 		"babel-core": "^6.26.0",
 		"babel-loader": "^7.1.4",
