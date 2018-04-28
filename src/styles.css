@@ -8,9 +8,11 @@ html {
 
 body {
 	--body-dark: #403c40;
-	--body-medium: #605560;
-	--body-light: #fafafa;
+	--body-medium: #484747;
+	--card-light: #fff;
+	--body-light: #f0f0f0;
 	--body-shadow: rgba(0, 0, 0, 0.3);
+	--main-purple: #6735b4;
 
 	width: 100vw;
 	overflow-x: hidden;
@@ -33,38 +35,46 @@ body {
 	z-index: 2;
 
 	width: 100%;
-	height: 45px;
+	height: 56px;
 
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-start;
 
-	background-color: rgb(103, 58, 183);
+	background-color: var(--main-purple);
 	color: var(--body-light);
-	box-shadow: 3px 3px 10px -1px var(--body-shadow);
+	box-shadow: 0px 3px 10px -1px var(--body-shadow);
+}
+
+.header svg {
+	margin-left: 12px;
+	margin-right: 20px;
+	stroke: var(--body-light);
+	stroke-width: 2.05;
 }
 
 .header h1 {
 	margin: 10px;
-	font-size: 20px;
+	font-size: 19.5px;
+	font-weight: lighter;
 }
 
 .list {
-	margin-top: 55px;
+	margin-top: 73px;
 	min-height: 100vh;
 }
 
 .item {
 	position: relative;
 	overflow: hidden;
-	border-radius: 2px;
+	border-radius: 2.5px;
 	border-bottom: 0px;
 	max-height: 1050px;
-	margin: 0px 15px;
-	margin-bottom: 10px;
-
-	background-color: var(--body-light);
-	box-shadow: 3px 3px 10px -1px var(--body-shadow);
+	margin: 0px 16px;
+	margin-bottom: 8px;
+	line-height: 20px;
+	background-color: var(--card-light);
+	box-shadow: 0px 3px 10px -1px var(--body-shadow);
 
 	transition: opacity 0.3s, margin 0.2s 0.2s, max-height 0.3s 0.2s, filter 0.3s;
 	transition-timing-function: ease;
@@ -77,51 +87,60 @@ body {
 	filter: blur(1px);
 	opacity: 0.5;
 }
+
+.item.active {
+	box-shadow: 0px 3px 12px -1px var(--body-shadow);
+}
+
 .item.dismissed {
 	max-height: 0.5px;
 	opacity: 0;
-	margin: 0px 15px;
+	margin: 0px 16px;
 	filter: blur(5px);
-}
-
-.item p {
-	padding: 10px;
-	padding-top: 0px;
 }
 
 .author {
 	display: flex;
 	align-items: center;
 }
-
+.author div {
+	margin-left: 2px;
+	margin-top: 5px;
+}
 .author h2 {
-	font-size: 17px;
+	font-size: 14px;
+	font-weight: 900;
+	color: black;
 }
-
 .message-date {
-	font-weight: lighter;
-	color: var(--body-medium);
+	font-size: 12px;
+	color: #656565;
 }
 
-.item h3 {
-	float: right;
-	position: absolute;
-	right: 10px;
-	top: 5px;
-	color: var(--body-medium);
-	font-weight: lighter;
+.item p {
+	padding: 15px;
+	padding-top: 1px;
 }
 
 .item img {
-	width: 50px;
-	height: 50px;
-	border-radius: 50px;
+	width: 40px;
+	height: 40px;
+	border-radius: 40px;
 
-	margin: 15px 10px 10px 15px;
+	margin: 15px;
 	padding: 0.1px;
 
 	background-color: var(--body-light);
-	filter: sepia(1) hue-rotate(220deg) saturate(50%);
+}
+
+.drawer {
+	position: fixed;
+	left: 0;
+	top: 0;
+	background-color: var(--card-light);
+	color: var(--body-dark);
+	padding: 10px;
+	height: 100%;
 }
 
 .loading {

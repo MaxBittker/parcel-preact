@@ -12,7 +12,7 @@ export default class SwipeRecognizer extends Component {
 		super();
 		this.tolerance = 200;
 		this.gesture = { x: [], y: [], match: '' };
-		this.state = { offset: 0, released: true, hint: false };
+		this.state = { offset: 0, released: true, hint: false, active: false };
 	}
 	componentDidMount() {
 		let node = this.body;
@@ -41,6 +41,7 @@ export default class SwipeRecognizer extends Component {
 		this.setState({
 			offset: xTravel,
 			released: false,
+			active: true,
 			hint: Math.abs(xTravel) > this.tolerance,
 		});
 	};
@@ -65,7 +66,7 @@ export default class SwipeRecognizer extends Component {
 
 		this.gesture.x = [];
 		this.gesture.y = [];
-		this.setState({ released: true });
+		this.setState({ released: true, active: false });
 	};
 
 	render({ data, dismissed }, state) {

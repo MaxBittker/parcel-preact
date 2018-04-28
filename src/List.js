@@ -99,6 +99,18 @@ export default class List extends Component {
 			<div className="list-container">
 				<Header count={visibleCount} />
 				<div className="list">
+					<Item
+						key={'mock'}
+						data={{
+							author: {
+								name: 'Virginia Schultz',
+								photoUrl: '/photos/william-shakespeare.jpg',
+							},
+							updated: new Date() - 12000 * 60,
+							content:
+								'Fusce vehicula dolor arcu, sit amet blandit dolor mollis nec. Donec viverra eleifend lacus, vitae ullamcorper metus.',
+						}}
+					/>
 					{indexedItems.map(data => (
 						<Item
 							key={data.id}

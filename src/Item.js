@@ -6,7 +6,7 @@ import BASE_URL from './fetching';
 
 const ago = timeago();
 const PLACEHOLDER_IMG =
-	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8+fJ2PQAIngMuRE3dPAAAAABJRU5ErkJggg==';
 
 const ItemCard = ({
 	author,
@@ -18,14 +18,20 @@ const ItemCard = ({
 	released,
 	flyweight,
 	hint,
+	active,
 }) => (
 	<div
 		className={classnames('item', {
 			dismissed,
 			released,
 			hint,
+			active,
 		})}
-		style={{ transform: `translate3d(${offset}px, 0px, 0px)` }}
+		style={{
+			transform: `translate3d(${offset}px, 0px, 0px) ${
+				active ? 'scale(1.02)' : ''
+			}`,
+		}}
 	>
 		<div className="author">
 			<img
@@ -34,11 +40,7 @@ const ItemCard = ({
 			/>
 			<div>
 				<h2>{author.name}</h2>
-				<span className="message-date">
-					{`${new Date(updated).toLocaleDateString()} 
-					(${ago.format(updated)})`}
-				</span>
-				<h3>{id}</h3>
+				<span className="message-date">{ago.format(updated)}</span>
 			</div>
 		</div>
 		<p>{content}</p>
