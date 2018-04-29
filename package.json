@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "parcel index.html",
 		"lint": "eslint . --cache --fix",
-		"build": "parcel build index.js"
+		"build": "parcel build index.html -d build"
 	},
 	"repository": {
 		"type": "git"

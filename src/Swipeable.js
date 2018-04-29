@@ -12,7 +12,7 @@ const initialState = { offset: 0, released: true, hint: false, active: false };
 export default class SwipeRecognizer extends Component {
 	constructor() {
 		super();
-		this.tolerance = 200;
+		this.tolerance = Math.min(screen.width / 3, 200);
 		this.gesture = { x: [], y: [], match: '' };
 		this.state = initialState;
 	}
