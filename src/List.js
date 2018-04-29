@@ -9,7 +9,12 @@ import Loading from './Loading';
 import Header from './Header';
 
 export default class List extends Component {
-	state = { scrollLocation: 0, items: [], dismissedIDs: new Set() };
+	state = {
+		scrollLocation: 0,
+		items: [],
+		dismissedIDs: new Set(),
+		lastDismissed: undefined,
+	};
 
 	componentDidMount() {
 		document.addEventListener('scroll', this.onScroll);
@@ -74,12 +79,28 @@ export default class List extends Component {
 	dismissID(id) {
 		this.setState(
 			({ dismissedIDs }) => ({
+				lastDismissed: id,
 				dismissedIDs: dismissedIDs.add(id),
 			}),
 			// see if we need to refetch
 			this.onScroll
 		);
 	}
+
+	restore = () => {
+		this.setState({ dismissedIDs: new Set() }, this.onScroll);
+	};
+
+	restoreLast = () => {
+		this.setState(
+			({ dismissedIDs, lastDismissed }) => ({
+				dismissedIDs: (dismissedIDs.delete(lastDismissed), dismissedIDs),
+			}),
+			// see if we need to refetch
+			this.onScroll
+		);
+	};
+
 	render({}, { scrollLocation, items, fetching, dismissedIDs }) {
 		// aproximate number of interactive items to render at a given time
 		let liveZone = 16 / 2;
@@ -94,23 +115,14 @@ export default class List extends Component {
 
 		//index in list corresponding to the middle of the viewport
 		let viewportIndex = Math.floor(scrollLocation * visibleCount);
-
 		return (
 			<div className="list-container">
-				<Header count={visibleCount} />
+				<Header
+					dismissedIDs={dismissedIDs}
+					restore={this.restore}
+					restoreLast={this.restoreLast}
+				/>
 				<div className="list">
-					<Item
-						key={'mock'}
-						data={{
-							author: {
-								name: 'Virginia Schultz',
-								photoUrl: '/photos/william-shakespeare.jpg',
-							},
-							updated: new Date() - 12000 * 60,
-							content:
-								'Fusce vehicula dolor arcu, sit amet blandit dolor mollis nec. Donec viverra eleifend lacus, vitae ullamcorper metus.',
-						}}
-					/>
 					{indexedItems.map(data => (
 						<Item
 							key={data.id}

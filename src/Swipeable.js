@@ -7,12 +7,14 @@ const listenerOptions = {
 
 const last = a => a[a.length - 1];
 
+const initialState = { offset: 0, released: true, hint: false, active: false };
+
 export default class SwipeRecognizer extends Component {
 	constructor() {
 		super();
 		this.tolerance = 200;
 		this.gesture = { x: [], y: [], match: '' };
-		this.state = { offset: 0, released: true, hint: false, active: false };
+		this.state = initialState;
 	}
 	componentDidMount() {
 		let node = this.body;
@@ -60,6 +62,7 @@ export default class SwipeRecognizer extends Component {
 		) {
 			console.log('dismissed', this.props.id);
 			this.props.dismiss(this.props.id);
+			window.setTimeout(() => this.setState(initialState), 2000);
 		} else {
 			this.setState({ offset: 0 });
 		}

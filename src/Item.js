@@ -38,8 +38,8 @@ const ItemCard = ({
 				src={flyweight ? PLACEHOLDER_IMG : `${BASE_URL}${author.photoUrl}`}
 				alt={author.name}
 			/>
-			<div>
-				<h2>{author.name}</h2>
+			<div className="info">
+				<h2 className="name">{author.name}</h2>
 				<span className="message-date">{ago.format(updated)}</span>
 			</div>
 		</div>
