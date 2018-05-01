@@ -69,7 +69,7 @@ export default class SwipeRecognizer extends Component {
 
 		this.gesture.x = [];
 		this.gesture.y = [];
-		this.setState({ released: true, active: false });
+		this.setState({ released: true, active: false, hint: false });
 	};
 
 	render({ data, dismissed }, state) {
